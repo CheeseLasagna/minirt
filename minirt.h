@@ -17,41 +17,46 @@ typedef struct	s_image_data
 	int		line_size;
 	int		endian;
 	int		color;
-	int		res_x;
-	int		res_y;
-	int		viewpoint_w;
-	int		viewpoint_h;
+	int		img_x;
+	int		img_y;
+	double		viewpoint_w;
+	double		viewpoint_h;
 	int		d;
-}				t_image_data;
+}				t_image;
 
-typedef struct	s_sphere_data
+typedef struct	s_sphere
 {
-	int		x;
-	int		y;
-	int		z;
-	int		radius;
-	int		red;
-	int		green;
-	int		blue;
-}				t_sphere_data;
+	double		x;
+	double		y;
+	double		z;
+	double		radius;
+	int			color[3];		
+}				t_sphere;
 
 typedef struct	s_ray_data
 {
-	int cam_x;
-	int cam_y;
-	int cam_z;
-	int vp_intersec_x;
-	int vp_intersec_y;
-	int vp_intersec_z;
-	int t1;
-	int t2;
-	
-}				t_ray_data;	
+	double cam_x;
+	double cam_y;
+	double cam_z;
+	double vp_x;
+	double vp_y;
+	double vp_z;
+	double t_min;
+	double t_max;
+	double t1;
+	double t2;
+	double closest_t;
+}				t_ray;	
 
-void	my_mlx_pixel_put(t_image_data *ptr, int x, int y, int color);
-void	basic(t_image_data *ptr, t_ray_data *ptrray);
-void	canvas_to_viewport(t_image_data *ptr, t_ray_data *ptrray, int x, int y);
-int		trace_ray(t_ray_data *ptr, int t_min, int t_max);
-void	intersect_sphere(t_ray_data *ptrray, t_sphere_data *ptrsphere);
+typedef struct	s_objects
+{
+	t_sphere *ptrsph;
+}				t_objects;
+
+void	my_mlx_pixel_put(t_image *ptr, int x, int y, int color);
+void	basic(t_image *ptr, t_ray *ray);
+void	viewport_xyz(t_image *ptr, t_ray *ray, int x, int y);
+int		sphere_ray(t_ray *ray, t_sphere *sph);
+void	sphere_intersec(t_ray *ray, t_sphere *sph);
 
 #endif
