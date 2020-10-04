@@ -33,7 +33,7 @@ int	main(void)
 	img.image = mlx_new_image(img.mlx, img.img_x, img.img_y);
 	img.address = mlx_get_data_addr(img.image, &img.bits_per_pixel, &img.line_size, &img.endian);
 //	mlx_destroy_image(mlx, image);
-	basic(&img, &ray)
+	basic(&img, &ray);
 	mlx_put_image_to_window(img.mlx, img.window, img.image, 0, 0);
 	mlx_loop(img.mlx);
 	

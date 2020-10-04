@@ -33,6 +33,33 @@ typedef struct	s_sphere
 	int			color[3];		
 }				t_sphere;
 
+typedef struct	t_plane_data
+{
+	double		x;
+	double		y;
+	double		z;
+	double		n_x;
+	double		n_y;
+	double		n_z;
+	int			color[3];
+}				t_plane;
+
+typedef struct	s_triangle
+{
+	double a[3];
+	double b[3];
+	double c[3];
+	double n[3];
+	double vec_ab[3];
+	double vec_bc[3];
+	double vec_ca[3];
+	double vec_ap[3];
+	double vec_bp[3];
+	double vec_cp[3];
+	double p[3];
+	int color[3];
+}				t_triangle;
+
 typedef struct	s_ray_data
 {
 	double cam_x;
@@ -53,10 +80,30 @@ typedef struct	s_objects
 	t_sphere *ptrsph;
 }				t_objects;
 
+typedef struct	s_calc
+{
+	double k1;
+	double k2;
+	double k3;
+	double discriminant;
+}				t_calc;
+
 void	my_mlx_pixel_put(t_image *ptr, int x, int y, int color);
 void	basic(t_image *ptr, t_ray *ray);
 void	viewport_xyz(t_image *ptr, t_ray *ray, int x, int y);
+
 int		sphere_ray(t_ray *ray, t_sphere *sph);
 void	sphere_intersec(t_ray *ray, t_sphere *sph);
+
+int		plane_ray(t_ray *ray, t_plane *pl);
+void	plane_intersec(t_ray *ray, t_plane *pl);
+
+int		triangle_ray(t_ray *ray, t_triangle *tr);
+void	find_normal(t_triangle *tr);
+void	tplane_intersec(t_ray *ray, t_triangle *tr);
+int		inside_triangle(t_ray *ray, t_triangle *tr);
+
+int		dot_prod(double *vec1, double *vec2);
+void	cross_prod(double *res, double *vec1, double *vec2);
 
 #endif
