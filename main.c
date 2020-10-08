@@ -29,7 +29,7 @@ int	main(void)
 
 	imgcam(&img, &ray);
 	img.mlx = mlx_init();
-	img.window = mlx_new_window(img.mlx, 700, 700, "Hellooo");
+	img.window = mlx_new_window(img.mlx, 700, 700, "Hello there");
 	img.image = mlx_new_image(img.mlx, img.img_x, img.img_y);
 	img.address = mlx_get_data_addr(img.image, &img.bits_per_pixel, &img.line_size, &img.endian);
 //	mlx_destroy_image(mlx, image);

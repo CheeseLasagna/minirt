@@ -1,6 +1,6 @@
 NAME = test
 INC = /usr/lib
-SRC = main.c step1.c sphere.c plane.c triangle.c
+SRC = main.c step1.c sphere.c plane.c triangle.c square.c cylinder.c additional.c
 OBJ = $(SRC:.c=.o)
 
 all	:$(NAME)
