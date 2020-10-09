@@ -25,12 +25,12 @@ void plane_intersec(t_ray *ray, t_plane *pl)
 	double k1;
 	double k2;
 
-	oc[0] = pl->x - ray->cam_x;
-	oc[1] = pl->y - ray->cam_y;
-	oc[2] = pl->z - ray->cam_z;
+	oc[0] = pl->x - ray->cam[0];
+	oc[1] = pl->y - ray->cam[1];
+	oc[2] = pl->z - ray->cam[2];
 			
 	k1 = dot_prod(oc, pl->n);
-	k2 = ray->vp_x * pl->n[0] + ray->vp_y * pl->n[1] + ray->vp_z *pl->n[2];
+	k2 = dot_prod(ray->vp, pl->n);
 	if (k2 == 0)
 		ray->t1 = ray->t_max;
 	else
@@ -42,9 +42,9 @@ void find_np_plane(t_ray *ray, t_plane *pl)
 	double magnitude;
 
 	magnitude = mag(pl->n);
-	ray->p[0] = ray->cam_x + ray->closest_t * ray->vp_x;
-	ray->p[1] = ray->cam_y + ray->closest_t * ray->vp_y;
-	ray->p[2] = ray->cam_z + ray->closest_t * ray->vp_z;
+	ray->p[0] = ray->cam[0] + ray->closest_t * ray->vp[0];
+	ray->p[1] = ray->cam[1] + ray->closest_t * ray->vp[1];
+	ray->p[2] = ray->cam[2] + ray->closest_t * ray->vp[2];
 	ray->n[0] = pl->n[0] / magnitude;
 	ray->n[1] = pl->n[1] / magnitude;
 	ray->n[2] = pl->n[2] / magnitude;

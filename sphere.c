@@ -45,9 +45,6 @@ void compute_color_sphere(t_ray *ray, t_light *light, t_sphere *obj)
 		ray->blue = light->i * ((obj->color[2] + light->baran[2] + light->osel[2]) / 3);	
 	}
 }
-		
-	
-		
 
 void sphere_intersec(t_ray *ray, t_sphere *sph)
 {
@@ -57,12 +54,12 @@ void sphere_intersec(t_ray *ray, t_sphere *sph)
 	double k3;
 	double discriminant;
 	
-	co[0] = ray->cam_x - sph->c[0];
-	co[1] = ray->cam_y - sph->c[1];
-	co[2] = ray->cam_z - sph->c[2];
-	k1 = ray->vp_x * ray->vp_x + ray->vp_y * ray->vp_y + ray->vp_z * ray->vp_z;
-	k2 = 2 * (co[0] * ray->vp_x + co[1] * ray->vp_y + co[2] * ray->vp_z);
-	k3 = (co[0] * co[0] + co[1] * co[1] + co[2] * co[2]) - sph->radius * sph->radius;
+	co[0] = ray->cam[0] - sph->c[0];
+	co[1] = ray->cam[1] - sph->c[1];
+	co[2] = ray->cam[2] - sph->c[2];
+	k1 = dot_prod(ray->vp, ray->vp);
+	k2 = 2 * dot_prod(co, ray->vp);
+	k3 = dot_prod(co, co) - sph->radius * sph->radius;
 	discriminant = k2 * k2 - 4 * k1 * k3;
 	if (discriminant < 0)
 	{
@@ -80,9 +77,9 @@ void find_np_sphere(t_ray *ray, t_sphere *sph)
 {
 	double magnitude;
 	
-	ray->p[0] = ray->cam_x + ray->closest_t * ray->vp_x;	
-	ray->p[1] = ray->cam_y + ray->closest_t * ray->vp_y;	
-	ray->p[2] = ray->cam_z + ray->closest_t * ray->vp_z;
+	ray->p[0] = ray->cam[0] + ray->closest_t * ray->vp[0];	
+	ray->p[1] = ray->cam[1] + ray->closest_t * ray->vp[1];	
+	ray->p[2] = ray->cam[2] + ray->closest_t * ray->vp[2];
 	ray->n[0] = ray->p[0] - sph->c[0];
 	ray->n[1] = ray->p[1] - sph->c[1];
 	ray->n[2] = ray->p[2] - sph->c[2];

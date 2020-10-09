@@ -71,12 +71,8 @@ typedef struct	s_square
 
 typedef struct	s_ray_data
 {
-	double cam_x;
-	double cam_y;
-	double cam_z;
-	double vp_x;
-	double vp_y;
-	double vp_z;
+	double cam[3];
+	double vp[3];
 	double t_min;
 	double t_max;
 	double t1;
@@ -94,7 +90,14 @@ typedef struct	s_cylinder
 {
 	double c[3];
 	double radius;
+	double height;
+	double n[3];
 	int color[3];
+	double a;
+	double b;
+	double d;
+	double p[3];
+	double m;
 }				t_cylinder;	
 
 typedef struct	s_objects
@@ -135,8 +138,13 @@ int		square_ray(t_ray *ray, t_square *sq);
 void	splane_intersec(t_ray *ray, t_square *sq);
 int		inside_square(t_ray *ray, t_square *sq);
 
-int		cylinder_ray(t_ray *ray, t_cylinder *cy);
+void		cylinder_ray(t_ray *ray, t_cylinder *cy, t_light *light);
 void	cylinder_intersec(t_ray *ray, t_cylinder *cy);
+void	calc_cyl_abc(t_ray *ray, t_cylinder *cy);
+int		cylinder_limits(t_ray *ray, t_cylinder *cy);
+int		cylinder_limits2(t_ray *ray, t_cylinder *cy);
+void	find_np_cylinder(t_ray *ray, t_cylinder *cy);
+void	closest_t_cyl(t_ray *ray, t_cylinder *cy, int *check);
 
 double	dot_prod(double *vec1, double *vec2);
 void	cross_prod(double *res, double *vec1, double *vec2);
@@ -145,6 +153,7 @@ void compute_lighting(t_light *light, t_ray *ray);
 void compute_color_sphere(t_ray *ray, t_light *light, t_sphere *obj);
 void compute_color_plane(t_ray *ray, t_light *light, t_plane *obj);
 void compute_color_triangle(t_ray *ray, t_light *light, t_triangle *obj);
+void compute_color_cylinder(t_ray *ray, t_light *light, t_cylinder *obj);
 double mag(double *vec);
 
 #endif

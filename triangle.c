@@ -9,9 +9,9 @@ void triangle_ray(t_ray *ray, t_triangle *tr, t_light *light)
 	tplane_intersec(ray, tr);
 	if ((ray->t1 >= ray->t_min && ray->t1 < ray->t_max) && ray->t1 < ray->closest_t)
 	{
-		tr->p[0] = ray->cam_x + ray->t1 * ray->vp_x;  
-		tr->p[1] = ray->cam_y + ray->t1 * ray->vp_y;  
-		tr->p[2] = ray->cam_z + ray->t1 * ray->vp_z;  
+		tr->p[0] = ray->cam[0] + ray->t1 * ray->vp[0];  
+		tr->p[1] = ray->cam[1] + ray->t1 * ray->vp[1];  
+		tr->p[2] = ray->cam[2] + ray->t1 * ray->vp[2];  
 		if (inside_triangle(ray, tr)) 
 		{
 			check = 1;
@@ -42,16 +42,14 @@ void find_normal(t_triangle *tr)
 
 void tplane_intersec(t_ray *ray, t_triangle *tr)
 {
-	double oc_x;
-	double oc_y;
-	double oc_z;
+	double oc[3];
 
-	oc_x = tr->a[0] - ray->cam_x;
-	oc_y = tr->a[1] - ray->cam_y;
-	oc_z = tr->a[2] - ray->cam_z;
+	oc[0] = tr->a[0] - ray->cam[0];
+	oc[1] = tr->a[1] - ray->cam[1];
+	oc[2] = tr->a[2] - ray->cam[2];
 			
-	double k1 = oc_x * tr->n[0] + oc_y * tr->n[1] + oc_z * tr->n[2];
-	double k2 = ray->vp_x * tr->n[0] + ray->vp_y * tr->n[1] + ray->vp_z * tr->n[2];
+	double k1 = dot_prod(oc, tr->n);
+	double k2 = dot_prod(ray->vp, tr->n);
 	if (k2 == 0)
 		ray->t1 = ray->t_max;
 	else
@@ -93,9 +91,9 @@ void find_np_triangle(t_ray *ray, t_triangle *tr)
 	double magnitude;
 
 	magnitude = mag(tr->n);
-	ray->p[0] = ray->cam_x + ray->closest_t * ray->vp_x;
-	ray->p[1] = ray->cam_y + ray->closest_t * ray->vp_y;
-	ray->p[2] = ray->cam_z + ray->closest_t * ray->vp_z;
+	ray->p[0] = ray->cam[0] + ray->closest_t * ray->vp[0];
+	ray->p[1] = ray->cam[1] + ray->closest_t * ray->vp[1];
+	ray->p[2] = ray->cam[2] + ray->closest_t * ray->vp[2];
 	ray->n[0] = tr->n[0] / magnitude;
 	ray->n[1] = tr->n[1] / magnitude;
 	ray->n[2] = tr->n[2] / magnitude;
