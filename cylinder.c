@@ -1,18 +1,44 @@
 #include "minirt.h"
 
-void cylinder_ray(t_ray *ray, t_cylinder *cy, t_light *light)
+void cylinder_ray(t_ray *ray, t_objects *root)
 {
-	int check;
+	t_cylinder *cy;
+	t_cylinder *temp;
 
-	check = 0;
-	cylinder_intersec(ray, cy);
-	closest_t_cyl(ray, cy, &check);
-	find_np_cylinder(ray, cy);
-	compute_lighting(light, ray);
-	compute_color_cylinder(ray, light, cy);
-	if (check == 0)
+	cy = NULL;
+	temp = root->cylinder;
+	while (temp != NULL)
+	{
+		cylinder_closest(ray, &cy, temp);
+		temp = temp->next;
+	}
+	if (cy == NULL)
 		return ;
+	find_np_cylinder(ray, cy);
+	compute_lighting(root->ambient, root->light, ray);
+	compute_color_cylinder(ray, root, cy);
 	ray->color = (ray->red << 16) + (ray->green << 8) + (ray->blue);
+}
+
+void cylinder_closest(t_ray *ray, t_cylinder **cy, t_cylinder *temp)
+{
+	cylinder_intersec(ray, temp);
+	if ((ray->t1 >= ray->t_min && ray->t1 < ray->t_max) && ray->t1 < ray->closest_t)
+	{
+		if(cylinder_limits(ray, temp))
+		{
+			ray->closest_t = ray->t1;
+			*cy = temp;
+		}
+	}
+	if ((ray->t2 >= ray->t_min && ray->t2 < ray->t_max) && ray->t2 < ray->closest_t)
+	{
+		if(cylinder_limits2(ray, temp))
+		{
+			ray->closest_t = ray->t2;
+			*cy = temp;
+		}
+	}
 }
 
 void find_np_cylinder(t_ray *ray, t_cylinder *cy)
@@ -31,48 +57,33 @@ void find_np_cylinder(t_ray *ray, t_cylinder *cy)
 	ray->n[2] = ray->n[2] / magnitude;
 }
 
-void compute_color_cylinder(t_ray *ray, t_light *light, t_cylinder *obj)
+void compute_color_cylinder(t_ray *ray, t_objects *root, t_cylinder *obj)
 {
-	if (light->amb_i == 0)
+	t_ambient *amb;
+	t_light *l;
+
+	amb = root->ambient;
+	l = root->light;
+	if (amb->i == 0)
 	{
-		ray->red = light->i * ((obj->color[0] + light->baran[0]) / 2);	
-		ray->green = light->i * ((obj->color[1] + light->baran[1]) / 2);	
-		ray->blue = light->i * ((obj->color[2] + light->baran[2]) / 2);	
+		ray->red = ray->i * ((obj->color[0] + l->color[0]) / 2);	
+		ray->green = ray->i * ((obj->color[1] + l->color[1]) / 2);	
+		ray->blue = ray->i * ((obj->color[2] + l->color[2]) / 2);	
 	}
-	else if (light->point_i == 0)
+	else if (l->i == 0)
 	{
-		ray->red = light->i * ((obj->color[0] + light->osel[0]) / 2);	
-		ray->green = light->i * ((obj->color[1] + light->osel[1]) / 2);	
-		ray->blue = light->i * ((obj->color[2] + light->osel[2]) / 2);	
+		ray->red = ray->i * ((obj->color[0] + amb->color[0]) / 2);	
+		ray->green = ray->i * ((obj->color[1] + amb->color[1]) / 2);	
+		ray->blue = ray->i * ((obj->color[2] + amb->color[2]) / 2);	
 	}
 	else
 	{
-		ray->red = light->i * ((obj->color[0] + light->baran[0] + light->osel[0]) / 3);	
-		ray->green = light->i * ((obj->color[1] + light->baran[1] + light->osel[1]) / 3);	
-		ray->blue = light->i * ((obj->color[2] + light->baran[2] + light->osel[2]) / 3);	
+		ray->red = ray->i * ((obj->color[0] + l->color[0] + amb->color[0]) / 3);	
+		ray->green = ray->i * ((obj->color[1] + l->color[1] + amb->color[1]) / 3);	
+		ray->blue = ray->i * ((obj->color[2] + l->color[2] + amb->color[2]) / 3);	
 	}
 }
 
-void closest_t_cyl(t_ray *ray, t_cylinder *cy, int *check)
-{
-	if ((ray->t1 >= ray->t_min && ray->t1 < ray->t_max) && ray->t1 < ray->closest_t)
-	{
-		if(cylinder_limits(ray, cy))
-		{
-			ray->closest_t = ray->t1;
-			*check = 1;
-		}
-	}
-	if ((ray->t2 >= ray->t_min && ray->t2 < ray->t_max) && ray->t2 < ray->closest_t)
-	{
-		if(cylinder_limits2(ray, cy))
-		{
-			ray->closest_t = ray->t2;
-			*check = 1;
-		}
-	}
-}
-	
 void cylinder_intersec(t_ray *ray, t_cylinder *cy)
 {
 	double a;
@@ -118,12 +129,11 @@ void calc_cyl_abc(t_ray *ray, t_cylinder *cy)
 	y[2] = dp[2] - dot_prod(dp, cy->n) * cy->n[2];
 	cy->a = dot_prod(x, x);
 	cy->b = 2 * dot_prod(x, y);
-	cy->d = dot_prod(y, y) - cy->radius * cy->radius;
+	cy->d = dot_prod(y, y) - (cy->diam / 2) * (cy->diam / 2);
 }
 
 int cylinder_limits(t_ray *ray, t_cylinder *cy)
 {
-	double magni;
 	double cp[3];
 
 	cy->p[0] = ray->cam[0] + ray->t1 * ray->vp[0];	
@@ -140,7 +150,6 @@ int cylinder_limits(t_ray *ray, t_cylinder *cy)
 
 int cylinder_limits2(t_ray *ray, t_cylinder *cy)
 {
-	double magni;
 	double cp[3];
 
 	cy->p[0] = ray->cam[0] + ray->t2 * ray->vp[0];	

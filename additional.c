@@ -1,25 +1,24 @@
 #include "minirt.h"
 
-void	compute_lighting(t_light *light, t_ray *ray)
+void	compute_lighting(t_ambient *amb, t_light *light, t_ray *ray)
 {
 	double l[3];
 	double dot;
 
-	light->i = 0;
-	if (light->amb_i != 0)
-		light->i = light->i + light->amb_i;
-    if (light->point_i != 0)
+	ray->i = 0;
+	if (amb->i != 0)
+		ray->i = ray->i + amb->i;
+    if (light->i != 0)
 	{
-		l[0] = light->pos[0] - ray->p[0];	
-		l[1] = light->pos[1] - ray->p[1];	
-		l[2] = light->pos[2] - ray->p[2];	
+		l[0] = light->c[0] - ray->p[0];	
+		l[1] = light->c[1] - ray->p[1];	
+		l[2] = light->c[2] - ray->p[2];	
 		dot = dot_prod(ray->n, l);
-		//printf("dot = %f\n", dot);
 		if (dot > 0)
-			light->i += light->point_i * (dot / (mag(ray->n) * mag(l)));
+			ray->i += light->i * (dot / (mag(ray->n) * mag(l)));
 	}
-	if (light->i > 1)
-		light->i = 1;
+	if (ray->i > 1)
+		ray->i = 1;
 }	
 
 void cross_prod(double *res, double *vec1, double *vec2)
