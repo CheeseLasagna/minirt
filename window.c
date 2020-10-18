@@ -17,6 +17,7 @@ void imgcam(t_image *img, t_ray *ray, t_objects *root)
 	img->viewpoint_w = 1;
 	img->viewpoint_h = 1;
 	img->d = root->camera->n[2];
+	//printf("FIRST = %f\n", root->camera->n[2]);
 	ray->cam[0] = root->camera->c[0];
 	ray->cam[1] = root->camera->c[1];
 	ray->cam[2] = root->camera->c[2];
@@ -26,19 +27,58 @@ void imgcam(t_image *img, t_ray *ray, t_objects *root)
 	ray->y = img->img_y / -2;
 }
 
+int	close_w(int keycode, t_data *data)
+{
+	if (keycode == 65307)
+	{
+		mlx_destroy_window(data->img->mlx, data->img->window);
+		exit(0);
+	}
+	if (keycode == 65363)
+	{
+		if (data->root->camera->next != NULL)
+		{
+			data->root->camera = data->root->camera->next;
+			push_new_img(data->img, data->ray, data->root);
+		}
+	}
+	if (keycode == 65361)
+	{
+		if (data->root->camera->prev != NULL)
+		{
+			data->root->camera = data->root->camera->prev;
+			push_new_img(data->img, data->ray, data->root);
+		}
+	}
+}
+
+int close_k(void)
+{
+	exit(0);
+}
+
+void push_new_img(t_image *img, t_ray *ray, t_objects *root)
+{
+	imgcam(img, ray, root);
+	img->image = mlx_new_image(img->mlx, img->img_x, img->img_y);
+	img->address = mlx_get_data_addr(img->image, &img->bits_per_pixel, &img->line_size, &img->endian);
+	render(img, ray, root);
+	mlx_put_image_to_window(img->mlx, img->window, img->image, 0, 0);
+}
 void	window_manage(t_objects *root)
 {
 	t_image img;
 	t_ray ray;
+	t_data data;
 
-	imgcam(&img, &ray, root);
+	data.root = root;
+	data.img = &img;
+	data.ray = &ray;
 	img.mlx = mlx_init();
-	img.window = mlx_new_window(img.mlx, img.img_x, img.img_y, "Hello there");
-	img.image = mlx_new_image(img.mlx, img.img_x, img.img_y);
-	img.address = mlx_get_data_addr(img.image, &img.bits_per_pixel, &img.line_size, &img.endian);
-//	mlx_destroy_image(mlx, image);
-	render(&img, &ray, root);
-	mlx_put_image_to_window(img.mlx, img.window, img.image, 0, 0);
+	img.window = mlx_new_window(img.mlx, root->resol->r[0], root->resol->r[1], "Hello there");
+	push_new_img(&img, &ray, root);
+	mlx_hook(img.window, 2, 1L<<0, close_w, &data);
+	mlx_hook(img.window, 17, 1L<<17, close_k, 0);
 	mlx_loop(img.mlx);
 	
 	return ;

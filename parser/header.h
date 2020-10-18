@@ -76,6 +76,7 @@ typedef struct	s_camera
 	double				c[3];
 	double				n[3];
 	int					fov;
+	struct s_camera		*prev;
 	struct s_camera		*next;
 }				t_camera;
 

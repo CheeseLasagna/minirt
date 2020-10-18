@@ -15,7 +15,7 @@ void		sphere_ray(t_ray *ray, t_objects *root)
 	if (sph == NULL)
 		return ;
 	find_np_sphere(ray, sph);
-	compute_lighting(root->ambient, root->light, ray);
+	compute_lighting(root, ray);
 	compute_color_sphere(ray, root, sph);
 	ray->color = (ray->red << 16) + (ray->green << 8) + (ray->blue);
 }
@@ -37,7 +37,10 @@ void sphere_closest(t_ray *ray, t_sphere **sph, t_sphere *temp)
 
 void compute_color_sphere(t_ray *ray, t_objects *root, t_sphere *obj)
 {
-	t_ambient *amb;
+	ray->red = ray->i * sph_color_red(root, obj);
+	ray->green = ray->i * sph_color_green(root, obj);
+	ray->blue = ray->i * sph_color_blue(root, obj);
+	/*t_ambient *amb;
 	t_light *l;
 
 	amb = root->ambient;
@@ -59,7 +62,88 @@ void compute_color_sphere(t_ray *ray, t_objects *root, t_sphere *obj)
 		ray->red = ray->i * ((obj->color[0] + l->color[0] + amb->color[0]) / 3);	
 		ray->green = ray->i * ((obj->color[1] + l->color[1] + amb->color[1]) / 3);	
 		ray->blue = ray->i * ((obj->color[2] + l->color[2] + amb->color[2]) / 3);	
+	}*/
+}
+
+int sph_color_red(t_objects *root, t_sphere *obj)
+{
+	int n;
+	int color;
+	t_light *l;
+
+	n = 1;
+	l = root->light;
+	color = obj->color[0];
+	if (root->ambient->i != 0)
+	{
+		color = color + root->ambient->color[0];
+		n++;
 	}
+	while (l != NULL) 
+	{
+		if (l->i != 0)
+		{
+			color = color + l->color[0];
+			n++;
+		}
+		l = l->next;
+	}
+	color = color / n;
+	return (color);
+}
+
+int sph_color_green(t_objects *root, t_sphere *obj)
+{
+	int n;
+	int color;
+	t_light *l;
+
+	n = 1;
+	l = root->light;
+	color = obj->color[1];
+	if (root->ambient->i != 0)
+	{
+		color = color + root->ambient->color[1];
+		n++;
+	}
+	while (l != NULL) 
+	{
+		if (l->i != 0)
+		{
+			color = color + l->color[1];
+			n++;
+		}
+		l = l->next;
+	}
+	color = color / n;
+	return (color);
+}
+
+int sph_color_blue(t_objects *root, t_sphere *obj)
+{
+	int n;
+	int color;
+	t_light *l;
+
+	n = 1;
+	l = root->light;
+	color = obj->color[2];
+	if (root->ambient->i != 0)
+	{
+		color = color + root->ambient->color[2];
+		n++;
+	}
+	while (l != NULL) 
+	{
+		if (l->i != 0)
+		{
+			color = color + l->color[2];
+			n++;
+		}
+		l = l->next;
+	}
+	color = color / n;
+	return (color);
 }
 
 void sphere_intersec(t_ray *ray, t_sphere *sph)

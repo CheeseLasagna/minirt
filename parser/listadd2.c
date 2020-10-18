@@ -25,12 +25,14 @@ void	lst_addback_camera(t_camera **root, t_camera *nw)
 	if (*root == NULL)
 	{
 		nw->next = NULL;
+		nw->prev = NULL;
 		*root = nw;
 		return ;
 	}
 	while (temp->next != NULL)
 		temp = temp->next;
 	nw->next = NULL;
+	nw->prev = temp;
 	temp->next = nw;
 }
 

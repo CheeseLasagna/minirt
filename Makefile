@@ -14,3 +14,6 @@ $(NAME)	:$(OBJ)
 
 %.o:%.c mlx.h 
 	gcc -c $(SRC) -o $@  
+
+clean:
+	rm test $(OBJ)

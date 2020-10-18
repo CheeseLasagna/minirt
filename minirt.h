@@ -58,8 +58,16 @@ typedef struct	s_ray_data
 	int blue;
 }				t_ray;	
 
+typedef struct	s_data
+{
+	t_image		*img;
+	t_ray		*ray;
+	t_objects	*root;
+}				t_data;
+
 /*WINDOW IMAGE*/
 void	window_manage(t_objects *root);
+void push_new_img(t_image *img, t_ray *ray, t_objects *root);
 void	imgcam(t_image *img, t_ray *ray, t_objects *root);
 void	my_mlx_pixel_put(t_image *img, int x, int y, int color);
 void	render(t_image *img, t_ray *ray, t_objects *root);
@@ -105,10 +113,25 @@ void	cross_prod(double *res, double *vec1, double *vec2);
 double mag(double *vec);
 
 /*COLOR*/
-void compute_lighting(t_ambient *amb, t_light *light, t_ray *ray);
+void compute_lighting(t_objects *root, t_ray *ray);
 void compute_color_sphere(t_ray *ray, t_objects *root, t_sphere *obj);
+int	sph_color_red(t_objects *root, t_sphere *obj);
+int	sph_color_green(t_objects *root, t_sphere *obj);
+int	sph_color_blue(t_objects *root, t_sphere *obj);
 void compute_color_plane(t_ray *ray, t_objects *root, t_plane *obj);
+int	pl_color_red(t_objects *root, t_plane *obj);
+int	pl_color_green(t_objects *root, t_plane *obj);
+int	pl_color_blue(t_objects *root, t_plane *obj);
 void compute_color_triangle(t_ray *ray, t_objects *root, t_triangle *obj);
 void compute_color_cylinder(t_ray *ray, t_objects *root, t_cylinder *obj);
+int	cy_color_red(t_objects *root, t_cylinder *obj);
+int	cy_color_green(t_objects *root, t_cylinder *obj);
+int	cy_color_blue(t_objects *root, t_cylinder *obj);
+
+/*SHADOW*/
+int check_shadow(t_ray ray, t_objects *root, double *l);
+int sphere_shadow(t_ray *ray, t_objects *root);
+int plane_shadow(t_ray *ray, t_objects *root);
+int cylinder_shadow(t_ray *ray, t_objects *root);
 
 #endif

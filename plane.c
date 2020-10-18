@@ -15,7 +15,7 @@ void plane_ray(t_ray *ray, t_objects *root)
 	if (pl == NULL)
 		return ;
 	find_np_plane(ray, pl);
-	compute_lighting(root->ambient, root->light, ray);
+	compute_lighting(root, ray);
 	compute_color_plane(ray, root, pl);
 	ray->color = (ray->red << 16) + (ray->green << 8) + (ray->blue);
 }
@@ -62,7 +62,7 @@ void find_np_plane(t_ray *ray, t_plane *pl)
 }
 
 
-void compute_color_plane(t_ray *ray, t_objects *root, t_plane *obj)
+/*void compute_color_plane(t_ray *ray, t_objects *root, t_plane *obj)
 {
 	t_ambient *amb;
 	t_light *l;
@@ -87,4 +87,115 @@ void compute_color_plane(t_ray *ray, t_objects *root, t_plane *obj)
 		ray->green = ray->i * ((obj->color[1] + l->color[1] + amb->color[1]) / 3);	
 		ray->blue = ray->i * ((obj->color[2] + l->color[2] + amb->color[2]) / 3);	
 	}
+}*/
+
+void compute_color_plane(t_ray *ray, t_objects *root, t_plane *obj)
+{
+	ray->red = ray->i * pl_color_red(root, obj);
+	ray->green = ray->i * pl_color_green(root, obj);
+	ray->blue = ray->i * pl_color_blue(root, obj);
+	/*t_ambient *amb;
+	t_light *l;
+
+	amb = root->ambient;
+	l = root->light;
+	if (amb->i == 0)
+	{
+		ray->red = ray->i * ((obj->color[0] + l->color[0]) / 2);	
+		ray->green = ray->i * ((obj->color[1] + l->color[1]) / 2);	
+		ray->blue = ray->i * ((obj->color[2] + l->color[2]) / 2);	
+	}
+	else if (l->i == 0)
+	{
+		ray->red = ray->i * ((obj->color[0] + amb->color[0]) / 2);	
+		ray->green = ray->i * ((obj->color[1] + amb->color[1]) / 2);	
+		ray->blue = ray->i * ((obj->color[2] + amb->color[2]) / 2);	
+	}
+	else
+	{
+		ray->red = ray->i * ((obj->color[0] + l->color[0] + amb->color[0]) / 3);	
+		ray->green = ray->i * ((obj->color[1] + l->color[1] + amb->color[1]) / 3);	
+		ray->blue = ray->i * ((obj->color[2] + l->color[2] + amb->color[2]) / 3);	
+	}*/
+}
+
+int pl_color_red(t_objects *root, t_plane *obj)
+{
+	int n;
+	int color;
+	t_light *l;
+
+	n = 1;
+	l = root->light;
+	color = obj->color[0];
+	if (root->ambient->i != 0)
+	{
+		color = color + root->ambient->color[0];
+		n++;
+	}
+	while (l != NULL) 
+	{
+		if (l->i != 0)
+		{
+			color = color + l->color[0];
+			n++;
+		}
+		l = l->next;
+	}
+	color = color / n;
+	return (color);
+}
+
+int pl_color_green(t_objects *root, t_plane *obj)
+{
+	int n;
+	int color;
+	t_light *l;
+
+	n = 1;
+	l = root->light;
+	color = obj->color[1];
+	if (root->ambient->i != 0)
+	{
+		color = color + root->ambient->color[1];
+		n++;
+	}
+	while (l != NULL) 
+	{
+		if (l->i != 0)
+		{
+			color = color + l->color[1];
+			n++;
+		}
+		l = l->next;
+	}
+	color = color / n;
+	return (color);
+}
+
+int pl_color_blue(t_objects *root, t_plane *obj)
+{
+	int n;
+	int color;
+	t_light *l;
+
+	n = 1;
+	l = root->light;
+	color = obj->color[2];
+	if (root->ambient->i != 0)
+	{
+		color = color + root->ambient->color[2];
+		n++;
+	}
+	while (l != NULL) 
+	{
+		if (l->i != 0)
+		{
+			color = color + l->color[2];
+			n++;
+		}
+		l = l->next;
+	}
+	color = color / n;
+	return (color);
 }
