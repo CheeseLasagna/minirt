@@ -2,9 +2,6 @@
 
 void render(t_image *img, t_ray *ray, t_objects *root)
 {
-	root->square->b[0] = 0;
-	root->square->b[1] = 0;
-	root->square->b[2] = 0;
 	while (ray->x < img->img_x / 2)
 	{
 		while (ray->y < img->img_y / 2)

@@ -12,6 +12,9 @@ void	my_mlx_pixel_put(t_image *img, int x, int y, int color)
 
 void imgcam(t_image *img, t_ray *ray, t_objects *root)
 {
+	t_square *temp;
+
+	temp = root->square;
 	img->img_x = root->resol->r[0];
 	img->img_y = root->resol->r[1];
 	img->viewpoint_w = 1;
@@ -24,6 +27,27 @@ void imgcam(t_image *img, t_ray *ray, t_objects *root)
 	ray->t_max = 2147483647;
 	ray->x = img->img_x / -2;
 	ray->y = img->img_y / -2;
+	while (temp->next != NULL)
+	{
+		vert_zero(temp);
+		temp = temp->next;
+	}
+}
+
+void vert_zero(t_square *sq)
+{
+	sq->check = 0;
+	sq->b[1] = 0;
+	sq->b[2] = 0;
+	sq->d[0] = 0;
+	sq->d[1] = 0;
+	sq->d[2] = 0;
+	sq->a[0] = 0;
+	sq->a[1] = 0;
+	sq->a[2] = 0;
+	sq->e[0] = 0;
+	sq->e[1] = 0;
+	sq->e[2] = 0;
 }
 
 int	close_w(int keycode, t_data *data)

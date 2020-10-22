@@ -80,6 +80,7 @@ void	imgcam(t_image *img, t_ray *ray, t_objects *root);
 void	my_mlx_pixel_put(t_image *img, int x, int y, int color);
 void	render(t_image *img, t_ray *ray, t_objects *root);
 void	viewport_xyz(t_image *img, t_ray *ray, t_objects *root);
+void vert_zero(t_square *sq);
 
 /*SPHERE*/
 void	sphere_ray(t_ray *ray, t_objects *root);
@@ -105,11 +106,12 @@ void	find_np_triangle(t_ray *ray, t_triangle *tr);
 void		square_ray(t_ray *ray, t_objects *root);
 void	square_closest(t_ray *ray, t_square **sq, t_square *temp);
 void	splane_intersec(t_ray *ray, t_square *sq);
-int		inside_square(t_ray *ray, t_square *temp);
-//int		inside_square(t_ray *ray, t_square *sq);
+int		inside_square(t_ray *ray, t_square *sq);
 void	find_np_square(t_ray *ray, t_square *sq);
 void	find_vertices(t_ray *ray, t_square *temp);
+void find_vertices2(double magni, double *cp, t_square *temp);
 int	cmp(double *a, double *b);
+double	orient(t_square *sq, double *a, double *b);
 
 /*CYLINDER*/
 void	cylinder_ray(t_ray *ray, t_objects *root);
