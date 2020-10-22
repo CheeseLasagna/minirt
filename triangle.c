@@ -15,7 +15,7 @@ void triangle_ray(t_ray *ray, t_objects *root)
 	if (tr == NULL)
 		return ;
 	find_np_triangle(ray, tr);
-	compute_lighting(root->ambient, root->light, ray);
+	compute_lighting(root, ray);
 	compute_color_triangle(ray, root, tr);
 	ray->color = (ray->red << 16) + (ray->green << 8) + (ray->blue);
 }
@@ -110,30 +110,70 @@ void find_np_triangle(t_ray *ray, t_triangle *tr)
 	ray->n[2] = tr->n[2] / magnitude;
 }
 
-
 void compute_color_triangle(t_ray *ray, t_objects *root, t_triangle *obj)
 {
-	t_ambient *amb;
+	ray->red = ray->i * tr_color_red(root, obj);
+	ray->green = ray->i * tr_color_green(root, obj);
+	ray->blue = ray->i * tr_color_blue(root, obj);
+}
+
+int tr_color_red(t_objects *root, t_triangle *obj)
+{
+	int color;
 	t_light *l;
 
-	amb = root->ambient;
 	l = root->light;
-	if (amb->i == 0)
+	color = obj->color[0];
+	if (root->ambient->i != 0)
+		color = color + root->ambient->color[0];
+	while (l != NULL) 
 	{
-		ray->red = ray->i * ((obj->color[0] + l->color[0]) / 2);	
-		ray->green = ray->i * ((obj->color[1] + l->color[1]) / 2);	
-		ray->blue = ray->i * ((obj->color[2] + l->color[2]) / 2);	
+		if (l->i != 0)
+			color = color + l->color[0];
+		l = l->next;
 	}
-	else if (l->i == 0)
+	if (color > 255)
+		color = 255;
+
+	return (color);
+}
+
+int tr_color_green(t_objects *root, t_triangle *obj)
+{
+	int color;
+	t_light *l;
+
+	l = root->light;
+	color = obj->color[1];
+	if (root->ambient->i != 0)
+		color = color + root->ambient->color[1];
+	while (l != NULL) 
 	{
-		ray->red = ray->i * ((obj->color[0] + amb->color[0]) / 2);	
-		ray->green = ray->i * ((obj->color[1] + amb->color[1]) / 2);	
-		ray->blue = ray->i * ((obj->color[2] + amb->color[2]) / 2);	
+		if (l->i != 0)
+			color = color + l->color[1];
+		l = l->next;
 	}
-	else
+	if (color > 255)
+		color = 255;
+	return (color);
+}
+
+int tr_color_blue(t_objects *root, t_triangle *obj)
+{
+	int color;
+	t_light *l;
+
+	l = root->light;
+	color = obj->color[2];
+	if (root->ambient->i != 0)
+		color = color + root->ambient->color[2];
+	while (l != NULL) 
 	{
-		ray->red = ray->i * ((obj->color[0] + l->color[0] + amb->color[0]) / 3);	
-		ray->green = ray->i * ((obj->color[1] + l->color[1] + amb->color[1]) / 3);	
-		ray->blue = ray->i * ((obj->color[2] + l->color[2] + amb->color[2]) / 3);	
+		if (l->i != 0)
+			color = color + l->color[2];
+		l = l->next;
 	}
+	if (color > 255)
+		color = 255;
+	return (color);
 }

@@ -18,7 +18,10 @@ void	compute_lighting(t_objects *root, t_ray *ray)
 			l[1] = light->c[1] - ray->p[1];	
 			l[2] = light->c[2] - ray->p[2];
 			if ((check_shadow(*ray, root, l)))
-				return ;
+			{
+				light = light->next;
+				continue ;
+			}
 			dot = dot_prod(ray->n, l);
 			if (dot > 0)
 				ray->i += light->i * (dot / (mag(ray->n) * mag(l)));
@@ -41,17 +44,15 @@ int check_shadow(t_ray ray, t_objects *root, double *l)
 	ray.t_max = 1;
 	ray.closest_t = ray.t_max;
 	if ((sphere_shadow(&ray, root)) == 1)
-	{
 		return (1);
-	}
 	if ((plane_shadow(&ray, root)) == 1)
-	{
 		return (1);
-	}
 	if ((cylinder_shadow(&ray, root)) == 1)
-	{
 		return (1);
-	}
+	if ((triangle_shadow(&ray, root)) == 1)
+		return (1);
+	if ((square_shadow(&ray, root)) == 1)
+		return (1);
 	return (0);
 }
 
@@ -68,6 +69,23 @@ int sphere_shadow(t_ray *ray, t_objects *root)
 		temp = temp->next;
 	}
 	if (sph == NULL)
+		return (0);
+	return (1);
+}
+
+int triangle_shadow(t_ray *ray, t_objects *root)
+{
+	t_triangle *tr;
+	t_triangle *temp;
+
+	tr = NULL;
+	temp = root->triangle;
+	while (temp != NULL)
+	{
+		triangle_closest(ray, &tr, temp);
+		temp = temp->next;
+	}
+	if (tr == NULL)
 		return (0);
 	return (1);
 }
@@ -102,6 +120,23 @@ int cylinder_shadow(t_ray *ray, t_objects *root)
 		temp = temp->next;
 	}
 	if (cy == NULL)
+		return (0);
+	return (1);
+}
+
+int square_shadow(t_ray *ray, t_objects *root)
+{
+	t_square *sq;
+	t_square *temp;
+
+	sq = NULL;
+	temp = root->square;
+	while (temp != NULL)
+	{
+		square_closest(ray, &sq, temp);
+		temp = temp->next;
+	}
+	if (sq == NULL)
 		return (0);
 	return (1);
 }

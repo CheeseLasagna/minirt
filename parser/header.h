@@ -26,6 +26,13 @@ typedef struct	s_square
 {
 	double			c[3];
 	double			n[3];
+	double			p[3];
+	double			a[3];
+	double			b[3];
+	double			d[3];
+	double			vec_ab[3];
+	double			vec_ad[3];
+	double			vec_ap[3];
 	double			side;
 	int				color[3];
 	struct s_square	*next;

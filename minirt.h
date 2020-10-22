@@ -53,10 +53,18 @@ typedef struct	s_ray_data
 	double i;
 	double x;
 	double y;
+	double x1;
+	double y1;
+	double z1;
 	int red;
 	int green;
 	int blue;
 }				t_ray;	
+
+typedef struct	s_matrix
+{
+	double	matrix[3][3];
+}				t_matrix;
 
 typedef struct	s_data
 {
@@ -94,9 +102,14 @@ int		inside_triangle(t_ray *ray, t_triangle *tr);
 void	find_np_triangle(t_ray *ray, t_triangle *tr);
 
 /*SQUARE*/
-void		square_ray(t_ray *ray, t_square *sq);
+void		square_ray(t_ray *ray, t_objects *root);
+void	square_closest(t_ray *ray, t_square **sq, t_square *temp);
 void	splane_intersec(t_ray *ray, t_square *sq);
-int		inside_square(t_ray *ray, t_square *sq);
+int		inside_square(t_ray *ray, t_square *temp);
+//int		inside_square(t_ray *ray, t_square *sq);
+void	find_np_square(t_ray *ray, t_square *sq);
+void	find_vertices(t_ray *ray, t_square *temp);
+int	cmp(double *a, double *b);
 
 /*CYLINDER*/
 void	cylinder_ray(t_ray *ray, t_objects *root);
@@ -123,15 +136,37 @@ int	pl_color_red(t_objects *root, t_plane *obj);
 int	pl_color_green(t_objects *root, t_plane *obj);
 int	pl_color_blue(t_objects *root, t_plane *obj);
 void compute_color_triangle(t_ray *ray, t_objects *root, t_triangle *obj);
+int	tr_color_red(t_objects *root, t_triangle *obj);
+int	tr_color_green(t_objects *root, t_triangle *obj);
+int	tr_color_blue(t_objects *root, t_triangle *obj);
 void compute_color_cylinder(t_ray *ray, t_objects *root, t_cylinder *obj);
 int	cy_color_red(t_objects *root, t_cylinder *obj);
 int	cy_color_green(t_objects *root, t_cylinder *obj);
 int	cy_color_blue(t_objects *root, t_cylinder *obj);
+void compute_color_square(t_ray *ray, t_objects *root, t_square *obj);
+int	sq_color_red(t_objects *root, t_square *obj);
+int	sq_color_green(t_objects *root, t_square *obj);
+int	sq_color_blue(t_objects *root, t_square *obj);
 
 /*SHADOW*/
 int check_shadow(t_ray ray, t_objects *root, double *l);
 int sphere_shadow(t_ray *ray, t_objects *root);
 int plane_shadow(t_ray *ray, t_objects *root);
 int cylinder_shadow(t_ray *ray, t_objects *root);
+int triangle_shadow(t_ray *ray, t_objects *root);
+int square_shadow(t_ray *ray, t_objects *root);
+
+/*MATRIX*/
+void matrix_x(double cos_t, double sin_t, t_matrix *mat);
+void matrix_x_rev(double cos_t, double sin_t, t_matrix *mat);
+void matrix_y(double cos_t, double sin_t, t_matrix *mat);
+void matrix_y_rev(double cos_t, double sin_t, t_matrix *mat);
+void matrix_z(double cos_t, double sin_t, t_matrix *mat);
+void matrix_z_rev(double cos_t, double sin_t, t_matrix *mat);
+void  matrix_multiply(t_matrix *res, t_matrix a, t_matrix b);
+void   vector_matrix_multiply(t_matrix m, t_ray *ray);
+
+
+void calc_angle(double *cos_t, double *sin_t, double *n);
 
 #endif
