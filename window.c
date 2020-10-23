@@ -2,22 +2,22 @@
 
 void	my_mlx_pixel_put(t_image *img, int x, int y, int color)
 {
-    char    *dst;
+	char	*dst;
 
 	x = img->img_x / 2 + x;
 	y = img->img_y / 2 - y;
-    dst = img->address + (y * img->line_size + x * (img->bits_per_pixel / 8));
-    *(unsigned int*)dst = color;
+	dst = img->address + (y * img->line_size + x * (img->bits_per_pixel / 8));
+	*(unsigned int*)dst = color;
 }
 
-void imgcam(t_image *img, t_ray *ray, t_objects *root)
+void	imgcam(t_image *img, t_ray *ray, t_objects *root)
 {
 	t_square *temp;
 
 	temp = root->square;
 	img->img_x = root->resol->r[0];
 	img->img_y = root->resol->r[1];
-	img->viewpoint_w = 1;
+	img->viewpoint_w = find_width(root->camera->fov);
 	img->viewpoint_h = 1;
 	img->d = 1;
 	ray->cam[0] = root->camera->c[0];
@@ -34,23 +34,7 @@ void imgcam(t_image *img, t_ray *ray, t_objects *root)
 	}
 }
 
-void vert_zero(t_square *sq)
-{
-	sq->check = 0;
-	sq->b[1] = 0;
-	sq->b[2] = 0;
-	sq->d[0] = 0;
-	sq->d[1] = 0;
-	sq->d[2] = 0;
-	sq->a[0] = 0;
-	sq->a[1] = 0;
-	sq->a[2] = 0;
-	sq->e[0] = 0;
-	sq->e[1] = 0;
-	sq->e[2] = 0;
-}
-
-int	close_w(int keycode, t_data *data)
+int		close_w(int keycode, t_data *data)
 {
 	if (keycode == 65307)
 	{
@@ -75,34 +59,31 @@ int	close_w(int keycode, t_data *data)
 	}
 }
 
-int close_k(void)
-{
-	exit(0);
-}
-
-void push_new_img(t_image *img, t_ray *ray, t_objects *root)
+void	push_new_img(t_image *img, t_ray *ray, t_objects *root)
 {
 	imgcam(img, ray, root);
 	img->image = mlx_new_image(img->mlx, img->img_x, img->img_y);
-	img->address = mlx_get_data_addr(img->image, &img->bits_per_pixel, &img->line_size, &img->endian);
+	img->address = mlx_get_data_addr(img->image,
+			&img->bits_per_pixel, &img->line_size, &img->endian);
 	render(img, ray, root);
 	mlx_put_image_to_window(img->mlx, img->window, img->image, 0, 0);
 }
+
 void	window_manage(t_objects *root)
 {
-	t_image img;
-	t_ray ray;
-	t_data data;
+	t_image	img;
+	t_ray	ray;
+	t_data	data;
 
 	data.root = root;
 	data.img = &img;
 	data.ray = &ray;
 	img.mlx = mlx_init();
-	img.window = mlx_new_window(img.mlx, root->resol->r[0], root->resol->r[1], "Hello there");
+	img.window = mlx_new_window(img.mlx, root->resol->r[0],
+						root->resol->r[1], "Hello there");
 	push_new_img(&img, &ray, root);
-	mlx_hook(img.window, 2, 1L<<0, close_w, &data);
-	mlx_hook(img.window, 17, 1L<<17, close_k, 0);
+	mlx_hook(img.window, 2, 1L << 0, close_w, &data);
+	mlx_hook(img.window, 17, 1L << 17, close_k, 0);
 	mlx_loop(img.mlx);
-	
 	return ;
 }
