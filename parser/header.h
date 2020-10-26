@@ -5,6 +5,7 @@
 # include <fcntl.h>
 # include "get/get_next_line.h"
 # include <stdio.h>
+# include "../libft/libft.h"
 
 typedef struct	s_plane
 {
@@ -113,7 +114,7 @@ typedef struct	s_objects
 	t_resol		*resol;
 }				t_objects;
 
-void			arg_check(int argc, char **argv);
+int				arg_check(int argc, char **argv);
 void			open_read(int argc, char **argv, t_objects *root);
 void			parse_line(char *line, t_objects *root);
 void			parse_line2(t_objects *root);

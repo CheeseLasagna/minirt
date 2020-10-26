@@ -1,7 +1,8 @@
 #include "header.h"
 
-void	arg_check(int argc, char **argv)
+int	arg_check(int argc, char **argv)
 {
+	int i;
 	if (argc < 2)
 	{
 		write(1, "not enough arguments\n", 21);
@@ -12,6 +13,21 @@ void	arg_check(int argc, char **argv)
 		write(1, "too many arguments\n", 19);
 		exit(EXIT_FAILURE);
 	}
+	i = ft_strlen(argv[1]);
+	if (i < 4 || argv[1][i] != '\0' || argv[1][i - 1] != 't'
+		|| argv[1][i - 2] != 'r' || argv[1][i - 3] != '.')
+	{
+		write(1, "wrong file type\n", 16);
+		exit(0);
+	}
+	if (argc == 3 && (ft_memcmp(argv[2], "--save", 7))) 
+	{
+		write(1, "wrong second argument\n", 22);
+		exit(0);
+	}
+	if (argc == 2)
+		return (0);
+	return (1);
 }
 
 void	open_read(int argc, char **argv, t_objects *root)

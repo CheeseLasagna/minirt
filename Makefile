@@ -39,10 +39,15 @@ OBJ = $(SRC:.c=.o)
 all	:$(NAME)
 
 $(NAME)	:$(OBJ)
-	gcc -o $(NAME) $(OBJ) -L./minilibx/ -lmlx -L$(INC) -lXext -lX11 -lm
+	(cd libft; make all)
+	gcc -o $(NAME) $(OBJ) -L./libft -lft -L./minilibx/ -lmlx -L$(INC) -lXext -lX11 -lm
 
 %.o:%.c mlx.h 
 	gcc -c $(SRC) -o $@  
 
 clean:
 	rm test $(OBJ)
+
+fclean: clean
+	rm shot.bmp
+	(cd libft; make fclean)

@@ -7,6 +7,7 @@
 # include <stdio.h>
 # include <math.h>
 # include "parser/header.h"
+# include <sys/stat.h>
 
 typedef struct	s_image_data
 {
@@ -62,6 +63,25 @@ typedef struct	s_matrix
 	double	y[3];
 	double	z[3];
 }				t_matrix;
+
+typedef struct {
+	int			bfsize;
+	int			bfreserved1;
+	int			bfreserved2;
+	int			bfoffbits;
+	int			bisize;
+	int			biwidth;
+	int			biheight;
+	int			bicompression;
+	int			bisizeimage;
+	int			bixpelspermeter;
+	int			biypelspermeter;
+	int			biclrused;
+	int			biclrimportant;
+	int			biplanes;
+	int			bibitcount;
+	char		bftype[2];
+}				t_bmp;
 
 typedef struct	s_data
 {
@@ -182,6 +202,18 @@ int				plane_shadow(t_ray *ray, t_objects *root);
 int				cylinder_shadow(t_ray *ray, t_objects *root);
 int				triangle_shadow(t_ray *ray, t_objects *root);
 int				square_shadow(t_ray *ray, t_objects *root);
+
+/*
+**BMP
+*/
+void print_bmp(t_objects *root);
+void	save_bmp(t_data *data);
+//static void	write_bmp_header(t_data *data, int fd);
+//static void	write_bmp_info(t_data *data, int fd);
+//static void	write_bmp_image(t_data *data, int fd);
+static void		bmp_vars_input(t_bmp *bmp, t_data *data);
+static void		bmp_write(t_bmp bmp, t_data *data, int fd);
+static void		draw_img(t_data *data, t_bmp *bmp, int fd);
 
 void			calc_angle(double *cos_t, double *sin_t, double *n);
 
