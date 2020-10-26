@@ -7,17 +7,38 @@ void	parse_square(char *line, t_objects *root)
 	sq = (t_square*)malloc(sizeof(t_square));
 	if (sq == NULL)
 	{
-		write(1, "no memory\n", 10);
+		write(1, "Error\nno memory\n", 16);
 		free_root(root);
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
 	if ((fill_square(line, sq)) == -1)
 	{
-		write(1, "error in arguments\n", 19);
+		write(1, "Error\nInvalid arguments\n", 24);
 		free_root(root);
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
+	vert_zero(sq);
 	lst_addback_square(&(root->square), sq);
+}
+
+void	vert_zero(t_square *sq)
+{
+	sq->check = 0;
+	sq->p[0] = 0;
+	sq->p[1] = 0;
+	sq->p[2] = 0;
+	sq->b[0] = 0;
+	sq->b[1] = 0;
+	sq->b[2] = 0;
+	sq->d[0] = 0;
+	sq->d[1] = 0;
+	sq->d[2] = 0;
+	sq->a[0] = 0;
+	sq->a[1] = 0;
+	sq->a[2] = 0;
+	sq->e[0] = 0;
+	sq->e[1] = 0;
+	sq->e[2] = 0;
 }
 
 int		fill_square(char *line, t_square *sq)
@@ -51,15 +72,15 @@ void	parse_cylinder(char *line, t_objects *root)
 	cy = (t_cylinder*)malloc(sizeof(t_cylinder));
 	if (cy == NULL)
 	{
-		write(1, "no memory\n", 10);
+		write(1, "Error\nno memory\n", 16);
 		free_root(root);
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
 	if ((fill_cylinder(line, cy)) == -1)
 	{
-		write(1, "error in arguments\n", 19);
+		write(1, "Error\nInvalid arguments\n", 24);
 		free_root(root);
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
 	lst_addback_cylinder(&(root->cylinder), cy);
 }

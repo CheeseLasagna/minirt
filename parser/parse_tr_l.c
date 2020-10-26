@@ -7,15 +7,15 @@ void	parse_triangle(char *line, t_objects *root)
 	tr = (t_triangle*)malloc(sizeof(t_triangle));
 	if (tr == NULL)
 	{
-		write(1, "no memory\n", 10);
+		write(1, "Error\nno memory\n", 16);
 		free_root(root);
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
 	if ((fill_triangle(line, tr)) == -1)
 	{
-		write(1, "error in arguments\n", 19);
+		write(1, "Error\nInvalid arguments\n", 24);
 		free_root(root);
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
 	lst_addback_triangle(&(root->triangle), tr);
 }
@@ -52,15 +52,15 @@ void	parse_light(char *line, t_objects *root)
 	l = (t_light*)malloc(sizeof(t_light));
 	if (l == NULL)
 	{
-		write(1, "no memory\n", 10);
+		write(1, "Error\nno memory\n", 16);
 		free_root(root);
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
 	if ((fill_light(line, l)) == -1)
 	{
-		write(1, "error in arguments\n", 19);
+		write(1, "Error\nInvalid arguments\n", 24);
 		free_root(root);
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
 	lst_addback_light(&(root->light), l);
 }

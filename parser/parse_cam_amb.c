@@ -7,15 +7,15 @@ void	parse_camera(char *line, t_objects *root)
 	cam = (t_camera*)malloc(sizeof(t_camera));
 	if (cam == NULL)
 	{
-		write(1, "no memory\n", 10);
+		write(1, "Error\nno memory\n", 16);
 		free_root(root);
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
 	if ((fill_camera(line, cam)) == -1)
 	{
-		write(1, "error in arguments\n", 19);
+		write(1, "Error\nInvalid arguments\n", 24);
 		free_root(root);
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
 	lst_addback_camera(&(root->camera), cam);
 }
@@ -48,15 +48,15 @@ void	parse_ambient(char *line, t_objects *root)
 	amb = (t_ambient*)malloc(sizeof(t_ambient));
 	if (amb == NULL)
 	{
-		write(1, "no memory\n", 10);
+		write(1, "Error\nno memory\n", 16);
 		free_root(root);
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
 	if ((fill_ambient(line, amb)) == -1)
 	{
-		write(1, "error in arguments\n", 19);
+		write(1, "Error\nInvalid arguments\n", 24);
 		free_root(root);
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
 	lst_addback_ambient(root, amb);
 }

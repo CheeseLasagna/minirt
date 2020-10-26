@@ -2,6 +2,7 @@ NAME = test
 INC = /usr/lib
 SRC = main.c \
 	window.c \
+	save_bmp.c\
 	step1.c \
 	triangle.c \
 	triangle2.c \
@@ -36,18 +37,20 @@ SRC = main.c \
 
 OBJ = $(SRC:.c=.o)
 
+FLAGS = -Wall -Wextra -Werror
+
 all	:$(NAME)
 
 $(NAME)	:$(OBJ)
 	(cd libft; make all)
-	gcc -o $(NAME) $(OBJ) -L./libft -lft -L./minilibx/ -lmlx -L$(INC) -lXext -lX11 -lm
+	gcc $(FLAGS) -o $(NAME) $(OBJ) -L./libft -lft -L./minilibx/ -lmlx -L$(INC) -lXext -lX11 -lm
 
 %.o:%.c mlx.h 
-	gcc -c $(SRC) -o $@  
+	gcc $(FLAGS) -c $(SRC) -o $@  
 
 clean:
 	rm test $(OBJ)
 
 fclean: clean
-	rm shot.bmp
 	(cd libft; make fclean)
+	rm shot.bmp

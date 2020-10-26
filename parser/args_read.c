@@ -1,28 +1,29 @@
 #include "header.h"
 
-int	arg_check(int argc, char **argv)
+int		arg_check(int argc, char **argv)
 {
 	int i;
+
 	if (argc < 2)
 	{
-		write(1, "not enough arguments\n", 21);
-		exit(EXIT_FAILURE);
+		write(1, "Error\nnot enough arguments\n", 27);
+		exit(0);
 	}
 	if (argc > 3)
 	{
-		write(1, "too many arguments\n", 19);
-		exit(EXIT_FAILURE);
+		write(1, "Error\ntoo many arguments\n", 25);
+		exit(0);
 	}
 	i = ft_strlen(argv[1]);
 	if (i < 4 || argv[1][i] != '\0' || argv[1][i - 1] != 't'
 		|| argv[1][i - 2] != 'r' || argv[1][i - 3] != '.')
 	{
-		write(1, "wrong file type\n", 16);
+		write(1, "Error\nwrong file type\n", 22);
 		exit(0);
 	}
-	if (argc == 3 && (ft_memcmp(argv[2], "--save", 7))) 
+	if (argc == 3 && (ft_memcmp(argv[2], "--save", 7)))
 	{
-		write(1, "wrong second argument\n", 22);
+		write(1, "Error\nwrong second argument\n", 28);
 		exit(0);
 	}
 	if (argc == 2)
@@ -39,8 +40,8 @@ void	open_read(int argc, char **argv, t_objects *root)
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 	{
-		perror("open");
-		exit(EXIT_FAILURE);
+		perror("Error\n");
+		exit(0);
 	}
 	while ((i = get_next_line(fd, &line)))
 	{
@@ -50,16 +51,8 @@ void	open_read(int argc, char **argv, t_objects *root)
 	free(line);
 	if (root->resol == NULL)
 	{
-		write(1, "error: Resolution not set\n", 26);
+		write(1, "Error\nResolution not set\n", 25);
 		free_root(root);
-		exit(EXIT_FAILURE) ;
+		exit(0);
 	}
-	if (root->camera == NULL)
-	{
-		write(1, "error: camera not set\n", 22);
-		free_root(root);
-		exit(EXIT_FAILURE) ;
-	}
-//	print_stuff(root);
-//	free_root(root);
 }

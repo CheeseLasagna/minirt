@@ -66,21 +66,21 @@ typedef struct	s_matrix
 
 typedef struct {
 	int			bfsize;
-	int			bfreserved1;
-	int			bfreserved2;
+	int			reserved1;
+	int			reserved2;
 	int			bfoffbits;
 	int			bisize;
-	int			biwidth;
-	int			biheight;
-	int			bicompression;
-	int			bisizeimage;
+	int			width;
+	int			height;
+	int			compression;
+	int			sizeimage;
 	int			bixpelspermeter;
 	int			biypelspermeter;
 	int			biclrused;
 	int			biclrimportant;
 	int			biplanes;
 	int			bibitcount;
-	char		bftype[2];
+	char		type[2];
 }				t_bmp;
 
 typedef struct	s_data
@@ -99,7 +99,6 @@ void			imgcam(t_image *img, t_ray *ray, t_objects *root);
 void			my_mlx_pixel_put(t_image *img, int x, int y, int color);
 void			render(t_image *img, t_ray *ray, t_objects *root);
 void			viewport_xyz(t_image *img, t_ray *ray, t_objects *root);
-void			vert_zero(t_square *sq);
 void			find_cs(t_matrix *m, t_objects *root);
 void			calc_matrix(t_matrix m, t_ray *ray, double *n, double *b);
 double			find_width(double deg);
@@ -206,15 +205,13 @@ int				square_shadow(t_ray *ray, t_objects *root);
 /*
 **BMP
 */
-void print_bmp(t_objects *root);
-void	save_bmp(t_data *data);
-//static void	write_bmp_header(t_data *data, int fd);
-//static void	write_bmp_info(t_data *data, int fd);
-//static void	write_bmp_image(t_data *data, int fd);
-static void		bmp_vars_input(t_bmp *bmp, t_data *data);
-static void		bmp_write(t_bmp bmp, t_data *data, int fd);
-static void		draw_img(t_data *data, t_bmp *bmp, int fd);
+void			print_bmp(t_objects *root);
+void			save_bmp(t_data *data);
+void			bmp_vars_input(t_bmp *bmp, t_data *data);
+void			bmp_write(t_bmp bmp, t_data *data, int fd);
+void			draw_img(t_data *data, t_bmp *bmp, int fd);
 
 void			calc_angle(double *cos_t, double *sin_t, double *n);
+void			initialise_objects(t_objects *root);
 
 #endif

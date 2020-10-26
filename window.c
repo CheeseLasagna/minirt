@@ -27,11 +27,6 @@ void	imgcam(t_image *img, t_ray *ray, t_objects *root)
 	ray->t_max = 2147483647;
 	ray->x = img->img_x / -2;
 	ray->y = img->img_y / -2;
-	while (temp->next != NULL)
-	{
-		vert_zero(temp);
-		temp = temp->next;
-	}
 }
 
 int		close_w(int keycode, t_data *data)

@@ -7,15 +7,15 @@ void	parse_resol(char *line, t_objects *root)
 	res = (t_resol*)malloc(sizeof(t_resol));
 	if (res == NULL)
 	{
-		write(1, "no memory\n", 10);
+		write(1, "Error\nno memory\n", 16);
 		free_root(root);
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
 	if ((fill_resol(line, res)) == -1)
 	{
-		write(1, "error in arguments\n", 19);
+		write(1, "Error\nInvalid arguments\n", 24);
 		free_root(root);
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
 	lst_addback_resol(root, res);
 }

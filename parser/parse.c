@@ -28,7 +28,7 @@ void	parse_line(char *line, t_objects *root)
 
 void	parse_line2(t_objects *root)
 {
-	write(1, "error in config file\n", 21);
+	write(1, "Error\nInvalid arguments\n", 24);
 	free_root(root);
-	exit(EXIT_FAILURE);
+	exit(0);
 }

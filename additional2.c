@@ -14,22 +14,6 @@ double	find_width(double deg)
 	return (width);
 }
 
-void	vert_zero(t_square *sq)
-{
-	sq->check = 0;
-	sq->b[1] = 0;
-	sq->b[2] = 0;
-	sq->d[0] = 0;
-	sq->d[1] = 0;
-	sq->d[2] = 0;
-	sq->a[0] = 0;
-	sq->a[1] = 0;
-	sq->a[2] = 0;
-	sq->e[0] = 0;
-	sq->e[1] = 0;
-	sq->e[2] = 0;
-}
-
 int		close_k(void)
 {
 	exit(0);

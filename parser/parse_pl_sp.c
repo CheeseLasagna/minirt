@@ -7,15 +7,15 @@ void	parse_plane(char *line, t_objects *root)
 	pl = (t_plane*)malloc(sizeof(t_plane));
 	if (pl == NULL)
 	{
-		write(2, "no memory\n", 10);
+		write(1, "Error\nno memory\n", 16);
 		free_root(root);
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
 	if ((fill_plane(line, pl)) == -1)
 	{
-		write(2, "error in arguments\n", 19);
+		write(1, "Error\nInvalid arguments\n", 24);
 		free_root(root);
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
 	lst_addback_plane(&(root->plane), pl);
 }
@@ -48,15 +48,15 @@ void	parse_sphere(char *line, t_objects *root)
 	sph = (t_sphere*)malloc(sizeof(t_sphere));
 	if (sph == NULL)
 	{
-		write(2, "no memory\n", 10);
+		write(1, "Error\nno memory\n", 16);
 		free_root(root);
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
 	if ((fill_sphere(line, sph)) == -1)
 	{
-		write(2, "error in arguments\n", 19);
+		write(1, "Error\nInvalid arguments\n", 24);
 		free_root(root);
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
 	lst_addback_sphere(&(root->sphere), sph);
 }

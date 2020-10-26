@@ -120,43 +120,64 @@ void			parse_line(char *line, t_objects *root);
 void			parse_line2(t_objects *root);
 void			print_stuff(t_objects *root);
 
-/*CAMERA*/
+/*
+**CAMERA
+*/
 void			parse_camera(char *line, t_objects *root);
 int				fill_camera(char *line, t_camera *cam);
 
-/*AMBIENT*/
+/*
+**AMBIENT
+*/
 void			parse_ambient(char *line, t_objects *root);
 int				fill_ambient(char *line, t_ambient *amb);
 
-/*RESOLUTION*/
+/*
+**RESOLUTION
+*/
 void			parse_resol(char *line, t_objects *root);
 int				fill_resol(char *line, t_resol *res);
 
-/*LIGHT*/
+/*
+**LIGHT
+*/
 void			parse_light(char *line, t_objects *root);
 int				fill_light(char *line, t_light *l);
 
-/*PLANE*/
+/*
+**PLANE
+*/
 void			parse_plane(char *line, t_objects *root);
 int				fill_plane(char *line, t_plane *pl);
 
-/*SPHERE*/
+/*
+**SPHERE
+*/
 void			parse_sphere(char *line, t_objects *root);
 int				fill_sphere(char *line, t_sphere *sph);
 
-/*SQUARE*/
+/*
+**SQUARE
+*/
 void			parse_square(char *line, t_objects *root);
 int				fill_square(char *line, t_square *sq);
+void			vert_zero(t_square *sq);
 
-/*CYLINDER*/
+/*
+**CYLINDER
+*/
 void			parse_cylinder(char *line, t_objects *root);
 int				fill_cylinder(char *line, t_cylinder *cy);
 
-/*TRIANGLE*/
+/*
+**TRIANGLE
+*/
 void			parse_triangle(char *line, t_objects *root);
 int				fill_triangle(char *line, t_triangle *tr);
 
-/*ARGUMENTS*/
+/*
+**ARGUMENTS
+*/
 int				skip_space(char **line);
 int				coordinates(char **line, double *c);
 int				direction(char **line, double *n);
@@ -166,12 +187,16 @@ int				brightness(char **line, double *i);
 int				fov(char **line, int *fov);
 int				resol(char **line, int *r);
 
-/*CONVERTER*/
+/*
+**CONVERTER
+*/
 int				atoi_rt(char **line);
 double			atoi_doub_rt(char **line);
 double			atoi_doub_rt2(char **line, double number);
 
-/*FREE*/
+/*
+**FREE
+*/
 void			free_root(t_objects *root);
 void			free_plane(t_plane *root);
 void			free_sphere(t_sphere *root);
@@ -183,7 +208,9 @@ void			free_camera(t_camera *root);
 void			free_ambient(t_ambient *root);
 void			free_resol(t_resol *root);
 
-/*LIST MANAGEMENT*/
+/*
+**LIST MANAGEMENT
+*/
 void			lst_addback_plane(t_plane **root, t_plane *nw);
 void			lst_addback_sphere(t_sphere **root, t_sphere *nw);
 void			lst_addback_square(t_square **root, t_square *nw);
