@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tlavelle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/27 09:43:33 by tlavelle          #+#    #+#             */
+/*   Updated: 2020/10/27 09:43:43 by tlavelle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "header.h"
 
 void	parse_line(char *line, t_objects *root)
@@ -28,7 +40,7 @@ void	parse_line(char *line, t_objects *root)
 
 void	parse_line2(t_objects *root)
 {
-	write(1, "Error\nInvalid arguments\n", 24);
+	write(1, "Error\nInvalid arguments in .rt file\n", 36);
 	free_root(root);
 	exit(0);
 }

@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_itoahex.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tlavelle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/27 11:26:31 by tlavelle          #+#    #+#             */
+/*   Updated: 2020/10/27 11:26:33 by tlavelle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
 int		ft_lenhex(long unsigned int n)
 {
 	int length;
-	
+
 	length = 0;
 	if (n == 0)
 		return (1);
@@ -14,11 +26,12 @@ int		ft_lenhex(long unsigned int n)
 	}
 	return (length);
 }
+
 char	*ft_itoahex(long unsigned int n, int bigsmall)
 {
-	int len;
-	char *ptr;
-	long unsigned int y;
+	int					len;
+	char				*ptr;
+	long unsigned int	y;
 
 	len = ft_lenhex(n);
 	if (!(ptr = (char*)malloc(sizeof(char) * (len + 1))))

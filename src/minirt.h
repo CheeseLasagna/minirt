@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minirt.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tlavelle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/27 09:54:16 by tlavelle          #+#    #+#             */
+/*   Updated: 2020/10/27 09:58:06 by tlavelle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINIRT_H
 # define MINIRT_H
 
-# include "minilibx/mlx.h"
-# include "minilibx/mlx_int.h"
+# include "../minilibx/mlx.h"
+# include "../minilibx/mlx_int.h"
 # include <X11/X.h>
 # include <stdio.h>
 # include <math.h>
-# include "parser/header.h"
+# include "../parser/header.h"
 # include <sys/stat.h>
 
 typedef struct	s_image_data

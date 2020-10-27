@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_cam_amb.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tlavelle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/27 09:44:12 by tlavelle          #+#    #+#             */
+/*   Updated: 2020/10/27 09:44:13 by tlavelle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "header.h"
 
 void	parse_camera(char *line, t_objects *root)
@@ -13,7 +25,7 @@ void	parse_camera(char *line, t_objects *root)
 	}
 	if ((fill_camera(line, cam)) == -1)
 	{
-		write(1, "Error\nInvalid arguments\n", 24);
+		write(1, "Error\nInvalid arguments in .rt file\n", 36);
 		free_root(root);
 		exit(0);
 	}
@@ -54,7 +66,7 @@ void	parse_ambient(char *line, t_objects *root)
 	}
 	if ((fill_ambient(line, amb)) == -1)
 	{
-		write(1, "Error\nInvalid arguments\n", 24);
+		write(1, "Error\nInvalid arguments in .rt file\n", 36);
 		free_root(root);
 		exit(0);
 	}

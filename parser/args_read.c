@@ -1,17 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   args_read.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tlavelle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/27 09:41:59 by tlavelle          #+#    #+#             */
+/*   Updated: 2020/10/27 09:42:01 by tlavelle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "header.h"
 
 int		arg_check(int argc, char **argv)
 {
 	int i;
 
-	if (argc < 2)
+	if (argc < 2 || argc > 3)
 	{
-		write(1, "Error\nnot enough arguments\n", 27);
-		exit(0);
-	}
-	if (argc > 3)
-	{
-		write(1, "Error\ntoo many arguments\n", 25);
+		write(1, "Error\nWrong number of arguments\n", 32);
 		exit(0);
 	}
 	i = ft_strlen(argv[1]);

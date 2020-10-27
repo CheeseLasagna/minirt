@@ -1,24 +1,24 @@
-NAME = test
+NAME = miniRT 
 INC = /usr/lib
-SRC = main.c \
-	window.c \
-	save_bmp.c\
-	step1.c \
-	triangle.c \
-	triangle2.c \
-	sphere.c \
-	sphere2.c \
-	plane.c \
-	plane2.c \
-	square.c \
-	square2.c \
-	square3.c \
-	cylinder.c \
-	cylinder2.c \
-	cylinder3.c \
-	additional.c \
-	additional2.c \
-	shadow.c \
+SRC = src/main.c \
+	src/window.c \
+	src/save_bmp.c\
+	src/step1.c \
+	src/triangle.c \
+	src/triangle2.c \
+	src/sphere.c \
+	src/sphere2.c \
+	src/plane.c \
+	src/plane2.c \
+	src/square.c \
+	src/square2.c \
+	src/square3.c \
+	src/cylinder.c \
+	src/cylinder2.c \
+	src/cylinder3.c \
+	src/additional.c \
+	src/additional2.c \
+	src/shadow.c \
 	parser/args_read.c \
 	parser/cdcs.c \
 	parser/convert.c \
@@ -42,6 +42,7 @@ FLAGS = -Wall -Wextra -Werror
 all	:$(NAME)
 
 $(NAME)	:$(OBJ)
+	(cd minilibx; make)
 	(cd libft; make all)
 	gcc $(FLAGS) -o $(NAME) $(OBJ) -L./libft -lft -L./minilibx/ -lmlx -L$(INC) -lXext -lX11 -lm
 
@@ -49,8 +50,11 @@ $(NAME)	:$(OBJ)
 	gcc $(FLAGS) -c $(SRC) -o $@  
 
 clean:
-	rm test $(OBJ)
+	rm miniRT $(OBJ)
 
 fclean: clean
+	(cd minilibx; make clean)
 	(cd libft; make fclean)
 	rm shot.bmp
+
+re: fclean all
